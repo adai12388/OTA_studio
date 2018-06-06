@@ -134,20 +134,22 @@ public class Utilities {
 	public static String getServerXmlUrl(){
 		String mServerXmlUrl = "";
 		String type = getType(URL_GET_TYPE);
+		String ServerIP = UserConfig.mServerIP;
+		Log.i(TAG,"yison getType type = "+type);
 		//如果是空则使用原始的配置
 		if(!TextUtils.isEmpty(type))
 		{
-			String defaultType = UserConfig.mServerIP.substring(UserConfig.mServerIP.indexOf("/", 7) + 1, UserConfig.mServerIP.length() - 1);
+			String defaultType = ServerIP.substring(ServerIP.indexOf("/", 7) + 1, ServerIP.length() - 1);
 			Log.e(TAG,"yison defaultType = "+defaultType);
-			UserConfig.mServerIP = UserConfig.mServerIP.replace(defaultType, type);
-			Log.e(TAG,"yison mServerIP = "+UserConfig.mServerIP);
+			ServerIP = ServerIP.replace(defaultType, type);
+			Log.e(TAG,"yison mServerIP = "+ServerIP);
 		}
 
 		if((!mDeviceModel.equals("")) && (!(mManufacturer.equals("")))){
-		    if (UserConfig.mServerIP.charAt(UserConfig.mServerIP.length() -1) == '/') {
-			    mServerXmlUrl = UserConfig.mServerIP + "UpdateInfo_" + mDeviceModel + "_" + mManufacturer + ".xml";
+		    if (ServerIP.charAt(ServerIP.length() -1) == '/') {
+			    mServerXmlUrl = ServerIP + "UpdateInfo_" + mDeviceModel + "_" + mManufacturer + ".xml";
 			} else {
-			    mServerXmlUrl = UserConfig.mServerIP + "/UpdateInfo_" + mDeviceModel + "_" + mManufacturer + ".xml";
+			    mServerXmlUrl = ServerIP + "/UpdateInfo_" + mDeviceModel + "_" + mManufacturer + ".xml";
 			}
 			Log.e(TAG,"yison getServerXmlUrl "+mServerXmlUrl);
 			return mServerXmlUrl;

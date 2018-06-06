@@ -1,128 +1,97 @@
-<FrameLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
-	<include    
-        layout="@layout/background"
-    />
-	
+
+    <include layout="@layout/background" />
+
+
+    <TextView
+        android:id="@+id/LeftPromptInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp"
+        android:text="@string/System_latest_version"
+        android:textColor="@drawable/white"
+        android:textSize="@dimen/text_size_title" />
+
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="500dp"
+        android:layout_height="400dp"
+        android:layout_marginLeft="350dp"
+        android:background="@drawable/white"
+        android:focusable="false">
+
+
+            <TextView
+                android:id="@+id/RightPromptInfo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:isScrollContainer="true"
+                android:scrollbarFadeDuration="2000"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical"
+                android:textColor="@drawable/black"
+                android:textSize="@dimen/text_size_information" />
+
+
+    </ScrollView>
 
     <LinearLayout
-			android:layout_width="match_parent"
-	    	android:layout_height="match_parent"
-	    	android:orientation="vertical" >
-		    <LinearLayout
-		        android:layout_width="match_parent"
-		        android:layout_height="0dp"
-		        android:layout_weight="1">
-		    </LinearLayout>
-		    
-			<LinearLayout
-			    android:layout_width="match_parent"
-		        android:layout_height="0dp"
-		        android:layout_weight="6"
-		        android:orientation="horizontal">		            
-		         	<LinearLayout			        	
-			        	android:layout_width="0dp"
-			        	android:layout_height="match_parent"
-			        	android:layout_weight="2">
-			        	<TextView
-			           	 	android:id="@+id/LeftPromptInfo"
-			            	android:layout_width="wrap_content"
-			           	 	android:layout_height="wrap_content"
-			            	android:layout_marginTop="150dp"
-			            	android:textSize="@dimen/text_size_title"
-			            	android:text="@string/System_latest_version"
-			            	android:textColor="@drawable/white" />
-	    			</LinearLayout>
-	    
-				   	<LinearLayout 
-					    android:orientation="vertical"
-					    android:layout_width="0dp"
-				        android:layout_height="match_parent"
-				        android:background="@drawable/white"
-				        android:layout_weight="3">
-				        <FrameLayout 
-				            android:layout_width="match_parent"
-				            android:layout_height="match_parent" >
-				            <ScrollView
-				                android:layout_width="fill_parent"
-        						android:layout_height="wrap_content"
-								android:focusable="false">
-				            <TextView
-				                 android:id="@+id/RightPromptInfo"
-						         android:layout_width="fill_parent"
-						         android:layout_height="wrap_content"
-						         android:textSize="@dimen/text_size_information"
-						         android:textColor="@drawable/black"
-						         android:isScrollContainer="true"
-						         android:scrollbars="vertical"
-						         android:scrollbarStyle="outsideOverlay"
-						         android:scrollbarFadeDuration="2000"
-					         />
-				            </ScrollView>
-							<TextView
-				                 android:id="@+id/progresstext"
-						         android:layout_width="wrap_content"
-						         android:layout_height="wrap_content"
-						         android:gravity="center"
-						         android:layout_gravity="center"
-						         android:textColor="@drawable/white"
-						         android:background="@drawable/white"
-						         android:textSize="50sp"
-					         />
-							<LinearLayout
-								android:layout_width="match_parent"
-								android:layout_height="wrap_content"
-								android:layout_gravity="bottom"
-								android:orientation="horizontal">
-								<Button
-									android:id="@+id/btnOperation"
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:layout_weight="1"
-									android:layout_gravity="center"
-									android:textColor="@drawable/btnbackground"
-									android:background="@drawable/white"
-									android:textSize="25sp"
-									android:onClick="updateOnLine"
-									android:text="@string/Check_updates"
-									/>
-								<Button
-									android:id="@+id/btnIgnore"
-									android:layout_width="match_parent"
-									android:layout_height="wrap_content"
-									android:layout_weight="1"
-									android:layout_gravity="center"
-									android:onClick="cancelUpdate"
-									android:clickable="true"
-									android:textColor="@drawable/btnbackground"
-									android:background="@drawable/white"
-									android:textSize="25sp"
-									android:text="@string/ignore"
-									android:visibility="gone"
-									/>
-							</LinearLayout>
+        android:layout_marginLeft="350dp"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scrollview"
+        android:orientation="horizontal">
 
-				            
-				        </FrameLayout>
-					         
-	    		</LinearLayout>
-	    
-	   			<LinearLayout
-		    		android:layout_width="0dp"
-	        		android:layout_height="match_parent"
-	        		android:layout_weight="1">
-	        	</LinearLayout>
-			</LinearLayout>
-		<LinearLayout
-			android:clickable="true"
-			android:onClick="onTest"
-			android:orientation="horizontal"
-			android:layout_width="match_parent"
-			android:layout_height="0dp"
-			android:layout_weight="1">
-		</LinearLayout>
-    </LinearLayout> 
-</FrameLayout >
+        <Button
+            android:id="@+id/btnOperation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/white"
+            android:onClick="updateOnLine"
+            android:text="@string/Check_updates"
+            android:textColor="@drawable/btnbackground"
+            android:textSize="25sp" />
+
+        <Button
+            android:id="@+id/btnIgnore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/white"
+            android:clickable="true"
+            android:onClick="cancelUpdate"
+            android:text="@string/ignore"
+            android:textColor="@drawable/btnbackground"
+            android:textSize="25sp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/progresstext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/white"
+        android:gravity="center"
+        android:textColor="@drawable/white"
+        android:textSize="50sp" />
+
+
+    <FrameLayout
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:clickable="true"
+        android:onClick="onTest" />
+
+</RelativeLayout>
+
+
