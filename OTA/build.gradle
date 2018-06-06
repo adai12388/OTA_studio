@@ -8,15 +8,17 @@ android {
 
         minSdkVersion 22
         targetSdkVersion 22
-
-
-
+        versionCode 2
+        versionName 'V4.0 beta'
     }
+
+
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            outFileFormat(defaultConfig, "release")
         }
     }
 
@@ -26,8 +28,6 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
-
-
 
     //as 与eclipse共用svn配置。
     sourceSets {
@@ -45,9 +45,28 @@ android {
 }
 
 
+def releaseTime() {
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
+}
+
+
+def outFileFormat(defaultConfig, str) {
+    // 自定义APK安装包名
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def path = "../" + str + "/";
+                def fileName = "OTA-${str}_V${defaultConfig.versionName}_${releaseTime()}.apk";
+                outputFileName = new File(path, fileName)
+            }
+        }
+    }
+}
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     provided files('../ibotn_framework.jar')
-    
+
 }
