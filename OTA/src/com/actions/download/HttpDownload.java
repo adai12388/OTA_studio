@@ -232,12 +232,14 @@ if(DEBUG) Log.d(TAG,"cancelOld local fiel="+local_file);
         String xml = mVersionUtils.getXmlByHttp();
         if(TextUtils.isEmpty(xml))
         {
-            cr.setResult(CheckResult.RESULT_SERVER_NOT_FOUND_XML);
+            cr.setResult(CheckResult.RESULT_UP_TO_DATE);
+            Log.e(TAG,"yison RESULT_SERVER_NOT_FOUND_XML");
             return cr;
         }
         UpdateInfo ui = mVersionUtils.CheckVersion(xml);
         if(ui == null) {
-            cr.setResult(CheckResult.RESULT_SERVER_NOT_FOUND_OTAZIP);
+            cr.setResult(CheckResult.RESULT_UP_TO_DATE);
+            Log.e(TAG,"yison RESULT_SERVER_NOT_FOUND_OTAZIP");
             return cr;
         }
         cr.mUpdateInfo = ui;

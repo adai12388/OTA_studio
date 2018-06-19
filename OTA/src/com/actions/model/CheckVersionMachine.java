@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.actions.download.DownloadHelper;
@@ -13,6 +14,12 @@ import com.actions.ota.MainActivity;
 import com.actions.ota.R;
 import com.actions.ota.UpdateApplication;
 import com.actions.utils.Debug;
+import com.actions.utils.Utilities;
+
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+
+import static android.app.ActivityThread.TAG;
 
 public class CheckVersionMachine {
     Context mContext;
@@ -47,11 +54,87 @@ public class CheckVersionMachine {
             mCallBack.onCVCheckNotReady(cr);
             return;
         }
-        mCallBack.onCVStart();
-        isDoingCheck = true;
-        new CheckUpdateXml().start();
+
+        if(pingOTAServer("edu.ibotn.com")) {
+            Log.d(TAG,"yison ping edu.ibotn.com success!");
+            mCallBack.onCVStart();
+            isDoingCheck = true;
+            new CheckUpdateXml().start();
+        }else
+        {
+            Log.e(TAG,"yison ping edu.ibotn.com error!");
+            CheckResult cr = new CheckResult();
+            cr.setResult(CheckResult.RESULT_CONNECTIVITY_ERROR);
+            mCallBack.onCVError(mCheckResult);
+        }
     }
-    
+
+    private boolean pingOTAServer(String serverIp) {
+        try {
+            String str = "ping -c 1 -i 0.2 -W 1 "
+                    + serverIp;
+            if(0 == executeCommand(str,2000))
+                return true;
+        }catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }catch (TimeoutException e)
+        {
+            e.printStackTrace();
+        }catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private static class Worker extends Thread {
+        private final Process process;
+        private Integer exit;
+
+        private Worker(Process process) {
+            this.process = process;
+        }
+
+        public void run() {
+            try {
+                exit = process.waitFor();
+            } catch (InterruptedException ignore) {
+                return;
+            }
+        }
+    }
+
+    /**
+     * 运行一个外部命令，返回状态.若超过指定的超时时间，抛出TimeoutException
+     * @param command
+     * @param timeout
+     * @return
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws TimeoutException
+     */
+    public static int executeCommand(final String command, final long timeout) throws IOException, InterruptedException, TimeoutException {
+        Process process = Runtime.getRuntime().exec(command);
+        Worker worker = new Worker(process);
+        worker.start();
+        try {
+            worker.join(timeout);
+            if (worker.exit != null){
+                return worker.exit;
+            } else{
+                throw new TimeoutException();
+            }
+        } catch (InterruptedException ex) {
+            worker.interrupt();
+            Thread.currentThread().interrupt();
+            throw ex;
+        } finally {
+            process.destroy();
+        }
+    }
+
+
     /**
      * Think about this case:
      * When the users perform a lot of click actions and then invoke a lot of thread to do check version stuff.
@@ -131,7 +214,7 @@ public class CheckVersionMachine {
                 //fix BUG00271034, we don't need to tell UI thread that much hurry
                 mCheckHanlder.sendMessageAtTime(msg, SystemClock.uptimeMillis() + 2*1000);
             } else {
-                msg.what = CheckResult.RESULT_CONNECTIVITY_ERROR;
+                msg.what = CheckResult.RESULT_UP_TO_DATE;
                 mCheckHanlder.sendMessage(msg);
             }
         }

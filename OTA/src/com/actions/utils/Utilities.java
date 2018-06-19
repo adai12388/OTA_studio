@@ -110,7 +110,7 @@ public class Utilities {
     public static String DownloadSuccessNotification = "android.DownloadSuccess";
     public static String downloadFailNotification = "android.DownloadFail";
     public static String UpdateFile = "android.intent.UPDATE" ;
-    private static String URL_GET_TYPE = "http://edu.ibotn.com/Config-server/terminal/datas";
+    public static String URL_GET_TYPE = "http://edu.ibotn.com/Config-server/terminal/datas";
 	
 	// get current system version
 	public static String mCurrentSystemVersion = android.os.SystemProperties.get(mSystemVersion , "");
